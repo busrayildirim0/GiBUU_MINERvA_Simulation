@@ -1,0 +1,3 @@
+/home/kali/projects/MixedSim/build/CMakeFiles/MixedSim.dir
+/home/kali/projects/MixedSim/build/CMakeFiles/edit_cache.dir
+/home/kali/projects/MixedSim/build/CMakeFiles/rebuild_cache.dir
