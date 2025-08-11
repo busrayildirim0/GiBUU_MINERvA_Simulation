@@ -3,7 +3,7 @@
 #include "G4ParticleTable.hh"
 #include "G4SystemOfUnits.hh"
 #include "G4Event.hh"
-#include "Randomize.hh"  // G4UniformRand için eklendi
+#include "Randomize.hh" 
 #include <fstream>
 #include <sstream>
 #include <vector>
@@ -13,11 +13,9 @@ PrimaryGeneratorAction::PrimaryGeneratorAction()
 {
     fParticleGun = new G4ParticleGun(1);
     
-    // CSV dosyasını oku
     std::ifstream file("events.csv");
     std::string line;
     
-    // Başlık satırını atla
     if (file.good()) {
         std::getline(file, line);
     }
@@ -35,7 +33,7 @@ PrimaryGeneratorAction::PrimaryGeneratorAction()
             }
         }
         
-        if (row.size() >= 3) {  // En az event_id, particle_type, energy
+        if (row.size() >= 3) { 
             fEventData.push_back(row);
         }
     }
@@ -53,18 +51,16 @@ void PrimaryGeneratorAction::GeneratePrimaries(G4Event* anEvent)
     G4int eventID = anEvent->GetEventID();
     
     if (eventID < fEventData.size()) {
-        // CSV'den okunan veriyi kullan
         std::vector<G4double> row = fEventData[eventID];
         G4String particleName;
         
-        // Basit parçacık eşleme
         if (row[1] == 14) particleName = "nu_mu";
         else if (row[1] == 12) particleName = "nu_e";
         else if (row[1] == 13) particleName = "mu-";
         else if (row[1] == 11) particleName = "e-";
         else if (row[1] == 22) particleName = "gamma";
         else if (row[1] == 2212) particleName = "proton";
-        else particleName = "mu-"; // Varsayılan
+        else particleName = "mu-"; 
 
         G4ParticleDefinition* particle = particleTable->FindParticle(particleName);
         if (!particle) {
@@ -76,7 +72,7 @@ void PrimaryGeneratorAction::GeneratePrimaries(G4Event* anEvent)
         fParticleGun->SetParticleMomentumDirection(G4ThreeVector(0, 0, 1));
         fParticleGun->SetParticleEnergy(row[2]*MeV);
     } else {
-        // Rastgele kozmik ışın oluştur
+        
         G4ParticleDefinition* particle = particleTable->FindParticle("mu-");
         
         fParticleGun->SetParticleDefinition(particle);
